@@ -14,18 +14,13 @@
             "metadata": {
                 "description": "The location to use for creating the function app and hosting plan. It must be one of the Azure locations that support function apps."
             }
-        },
-        "serviceBusNamespaceName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Service Bus Namespace"
-            }
         }
     },
     "variables": {
         "sbVersion": "2015-08-01",
+        "serviceBusNamespaceName": "[concat('sb', uniqueString(parameters('siteName')))]",
         "defaultSASKeyName": "RootManageSharedAccessKey",
-        "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', parameters('serviceBusNamespaceName'), variables('defaultSASKeyName'))]",
+        "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('serviceBusNamespaceName'), variables('defaultSASKeyName'))]",
         "storageName": "[concat('function', uniqueString(parameters('siteName')))]",
         "contentShareName": "[toLower(parameters('siteName'))]",
         "repoUrl": "https://github.com/jefking/fn-http-queue-sb",
@@ -89,7 +84,7 @@
             ],
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
-                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('serviceBusNamespaceName'))]"
+                "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
             ],
             "location": "[parameters('siteLocation')]",
             "kind": "functionapp"
@@ -105,7 +100,7 @@
         },
         {
             "apiVersion": "[variables('sbVersion')]",
-            "name": "[parameters('serviceBusNamespaceName')]",
+            "name": "[variables('serviceBusNamespaceName')]",
             "type": "Microsoft.ServiceBus/namespaces",
             "location": "[resourceGroup().location]",
             "resources": [
@@ -114,7 +109,7 @@
                     "name": "posted",
                     "type": "Queues",
                     "dependsOn": [
-                        "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
                     ]
                 }
             ]
