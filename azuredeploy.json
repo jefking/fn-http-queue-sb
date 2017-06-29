@@ -89,7 +89,7 @@
             ],
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
-                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('serviceBusNamespaceName')]"
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('serviceBusNamespaceName'))]"
             ],
             "location": "[parameters('siteLocation')]",
             "kind": "functionapp"
