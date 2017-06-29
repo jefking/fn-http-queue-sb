@@ -15,11 +15,12 @@
             "name": "res"
         },
         {
-            "type": "queue",
-            "direction": "out",
+            "type": "serviceBus",
             "name": "out",
             "queueName": "posted",
-            "connection": "ServiceBus"
+            "connection": "ServiceBus",
+            "accessRights_": "Manage",
+            "direction": "out"
         }
     ],
     "disabled": false
